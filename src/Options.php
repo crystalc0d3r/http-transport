@@ -26,6 +26,7 @@ class Options
      * @param bool $followLocation                  Follow redirects
      * @param int $maxRedirects                     Maximum redirects
      * @param bool $preservePostOnRedirect          Preserve POST method on redirect
+     * @param array|null $allowedProtocols          Allowed protocols ['http', 'https'] or null
      * @param StreamInterface|null $responseStream  Stream for response body
      * @param array $attributes                     Additional transport-specific attributes
      */
@@ -45,6 +46,7 @@ class Options
         public bool $followLocation = true,
         public int $maxRedirects = 5,
         public bool $preservePostOnRedirect = false,
+        public ?array $allowedProtocols = null,
 
         public ?StreamInterface $responseStream = null,
 

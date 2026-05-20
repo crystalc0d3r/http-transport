@@ -223,7 +223,7 @@ class CurlTransport implements HttpTransport
 
     private function applyBaseOptions(RequestInterface $request, Options $options): array
     {
-        return [
+        $opts = [
             CURLOPT_URL            => (string) $request->getUri(),
             CURLOPT_CUSTOMREQUEST  => $request->getMethod(),
             CURLOPT_RETURNTRANSFER => false,
@@ -233,6 +233,12 @@ class CurlTransport implements HttpTransport
             CURLOPT_SSL_VERIFYPEER => $options->verifySsl,
             CURLOPT_SSL_VERIFYHOST => $options->verifySsl ? 2 : 0,
         ];
+
+        if ($options->allowedProtocols) {
+            $opts[CURLOPT_PROTOCOLS_STR] = implode(',', $options->allowedProtocols);
+        }
+
+        return $opts;
     }
 
     private function applyProxyOptions(Options $options): array
