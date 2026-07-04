@@ -34,7 +34,7 @@ class ProxyPoolMiddleware implements Middleware
     public function handle(RequestInterface $request, Options $options, callable $next): Result
     {
         if ($options->proxy === null) {
-            $options->proxy = $this->nextProxy($request, $options);
+            $options = $options->withProxy($this->nextProxy($request, $options));
         }
 
         return $next($request, $options);

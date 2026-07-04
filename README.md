@@ -58,7 +58,20 @@ echo (string) $response->getBody() . PHP_EOL;
 
 ## Options
 
-Most transport configuration is done through `Crystalc0d3r\HttpTransport\Options`:
+Most transport configuration is done through `Crystalc0d3r\HttpTransport\Options`.
+
+`Options` is immutable: each `with*` method returns a new instance with the updated value, so you can change options by chaining them:
+
+```php
+use Crystalc0d3r\HttpTransport\Options;
+
+$options = (new Options())
+    ->withTimeout(15)
+    ->withConnectTimeout(5)
+    ->withProxy('http://user:pass@1.2.3.4:8080');
+```
+
+The constructor form is also convenient for one-off configuration:
 
 - **timeouts**: `timeout`, `connectTimeout`, `readTimeout`
 - **proxy**: `proxy` (example: `http://user:pass@1.2.3.4:8080`)

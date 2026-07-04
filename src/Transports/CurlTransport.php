@@ -170,7 +170,7 @@ class CurlTransport implements HttpTransport
         });
     }
 
-    private function setupBodyCallback($responseStream): void
+    private function setupBodyCallback(StreamInterface $responseStream): void
     {
         curl_setopt($this->curlHandle, CURLOPT_WRITEFUNCTION, static function ($ch, $data) use ($responseStream): int {
             return $responseStream->write($data);
