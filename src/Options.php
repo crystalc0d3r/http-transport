@@ -55,128 +55,128 @@ readonly class Options
 
     public function withTimeout(float $timeout): self
     {
-        $new = clone $this;
-        $new->timeout = $timeout;
-        return $new;
+        return clone($this, [
+            'timeout' => $timeout
+        ]);
     }
 
     public function withConnectTimeout(float $connectTimeout): self
     {
-        $new = clone $this;
-        $new->connectTimeout = $connectTimeout;
-        return $new;
+        return clone($this, [
+            'connectTimeout' => $connectTimeout
+        ]);
     }
 
     public function withReadTimeout(float $readTimeout): self
     {
-        $new = clone $this;
-        $new->readTimeout = $readTimeout;
-        return $new;
+        return clone($this, [
+            'readTimeout' => $readTimeout
+        ]);
     }
 
     public function withProxy(?string $proxy): self
     {
-        $new = clone $this;
-        $new->proxy = $proxy;
-        return $new;
+        return clone($this, [
+            'proxy' => $proxy
+        ]);
     }
 
     public function withVerifySsl(bool $verifySsl): self
     {
-        $new = clone $this;
-        $new->verifySsl = $verifySsl;
-        return $new;
+        return clone($this, [
+            'verifySsl' => $verifySsl
+        ]);
     }
 
     public function withCompression(bool $compression): self
     {
-        $new = clone $this;
-        $new->compression = $compression;
-        return $new;
+        return clone($this, [
+            'compression' => $compression
+        ]);
     }
 
     public function withDnsCacheTimeout(int $dnsCacheTimeout): self
     {
-        $new = clone $this;
-        $new->dnsCacheTimeout = $dnsCacheTimeout;
-        return $new;
+        return clone($this, [
+            'dnsCacheTimeout' => $dnsCacheTimeout
+        ]);
     }
 
     public function withTcpNoDelay(bool $tcpNoDelay): self
     {
-        $new = clone $this;
-        $new->tcpNoDelay = $tcpNoDelay;
-        return $new;
+        return clone($this, [
+            'tcpNoDelay' => $tcpNoDelay
+        ]);
     }
 
     public function withTcpKeepAlive(bool $tcpKeepAlive): self
     {
-        $new = clone $this;
-        $new->tcpKeepAlive = $tcpKeepAlive;
-        return $new;
+        return clone($this, [
+            'tcpKeepAlive' => $tcpKeepAlive
+        ]);
     }
 
     public function withTcpKeepIdle(int $tcpKeepIdle): self
     {
-        $new = clone $this;
-        $new->tcpKeepIdle = $tcpKeepIdle;
-        return $new;
+        return clone($this, [
+            'tcpKeepIdle' => $tcpKeepIdle
+        ]);
     }
 
     public function withTcpKeepInterval(int $tcpKeepInterval): self
     {
-        $new = clone $this;
-        $new->tcpKeepInterval = $tcpKeepInterval;
-        return $new;
+        return clone($this, [
+            'tcpKeepInterval' => $tcpKeepInterval
+        ]);
     }
 
     public function withBufferSize(int $bufferSize): self
     {
-        $new = clone $this;
-        $new->bufferSize = $bufferSize;
-        return $new;
+        return clone($this, [
+            'bufferSize' => $bufferSize
+        ]);
     }
 
     public function withFollowLocation(bool $followLocation): self
     {
-        $new = clone $this;
-        $new->followLocation = $followLocation;
-        return $new;
+        return clone($this, [
+            'followLocation' => $followLocation
+        ]);
     }
 
     public function withMaxRedirects(int $maxRedirects): self
     {
-        $new = clone $this;
-        $new->maxRedirects = $maxRedirects;
-        return $new;
+        return clone($this, [
+            'maxRedirects' => $maxRedirects
+        ]);
     }
 
     public function withPreservePostOnRedirect(bool $preservePostOnRedirect): self
     {
-        $new = clone $this;
-        $new->preservePostOnRedirect = $preservePostOnRedirect;
-        return $new;
+        return clone($this, [
+            'preservePostOnRedirect' => $preservePostOnRedirect
+        ]);
     }
 
     public function withAllowedProtocols(?array $allowedProtocols): self
     {
-        $new = clone $this;
-        $new->allowedProtocols = $allowedProtocols;
-        return $new;
+        return clone($this, [
+            'allowedProtocols' => $allowedProtocols
+        ]);
     }
 
     public function withResponseStream(?StreamInterface $responseStream): self
     {
-        $new = clone $this;
-        $new->responseStream = $responseStream;
-        return $new;
+        return clone($this, [
+            'responseStream' => $responseStream
+        ]);
     }
 
     public function withAttribute(string $key, mixed $value): self
     {
-        $new = clone $this;
-        $new->attributes[$key] = $value;
-        return $new;
+        return clone($this, [
+            'attributes' => [...$this->attributes, $key => $value]
+        ]);
     }
 
     public function withoutAttribute(string $key): self
@@ -185,8 +185,11 @@ readonly class Options
             return $this;
         }
 
-        $new = clone $this;
-        unset($new->attributes[$key]);
-        return $new;
+        $attributes = $this->attributes;
+        unset($attributes[$key]);
+
+        return clone($this, [
+            'attributes' => $attributes,
+        ]);
     }
 }
