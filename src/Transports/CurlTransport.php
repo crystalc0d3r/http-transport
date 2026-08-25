@@ -318,22 +318,29 @@ class CurlTransport implements HttpTransport
             return [];
         }
 
-        if (!$bodyStream->isSeekable() || $bodySize <= 1024 * 1024) {
-            return [CURLOPT_POSTFIELDS => (string) $bodyStream];
+        if ($bodyStream->isSeekable() && $bodySize !== null && $bodySize <= 1024 * 1024) {
+            return [
+                CURLOPT_POSTFIELDS => (string) $bodyStream,
+            ];
         }
 
         if ($bodyStream->isSeekable()) {
             $bodyStream->rewind();
         }
 
-        return [
-            CURLOPT_UPLOAD       => true,
-            CURLOPT_INFILESIZE   => $bodySize,
-            CURLOPT_READFUNCTION => static function ($ch, $fd, $length) use ($bodyStream) {
-                $data = $bodyStream->read($length);
-                return $data === '' ? '' : $data;
+        // Stream large or non-seekable bodies
+        $options = [
+            CURLOPT_UPLOAD => true,
+            CURLOPT_READFUNCTION => static function ($ch, $fd, int $length) use ($bodyStream): string {
+                return $bodyStream->read($length);
             },
         ];
+
+        if ($bodySize !== null) {
+            $options[defined('CURLOPT_INFILESIZE_LARGE') ? CURLOPT_INFILESIZE_LARGE : CURLOPT_INFILESIZE] = $bodySize;
+        }
+
+        return $options;
     }
 
     private function applyCustomCurlAttributes(Options $options): array
