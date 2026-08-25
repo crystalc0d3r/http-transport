@@ -327,8 +327,8 @@ class CurlTransport implements HttpTransport
         }
 
         return [
-            CURLOPT_UPLOAD     => true,
-            CURLOPT_INFILESIZE => $bodySize,
+            CURLOPT_UPLOAD       => true,
+            CURLOPT_INFILESIZE   => $bodySize,
             CURLOPT_READFUNCTION => static function ($ch, $fd, $length) use ($bodyStream) {
                 $data = $bodyStream->read($length);
                 return $data === '' ? '' : $data;
