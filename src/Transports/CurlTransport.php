@@ -234,6 +234,12 @@ class CurlTransport implements HttpTransport
             CURLOPT_SSL_VERIFYHOST => $options->verifySsl ? 2 : 0,
         ];
 
+        // Built-in workaround
+        if ($options->readTimeout > 0) {
+            $opts[CURLOPT_LOW_SPEED_LIMIT] = 1;
+            $opts[CURLOPT_LOW_SPEED_TIME]  = $options->readTimeout;
+        }
+
         if ($options->allowedProtocols) {
             $opts[CURLOPT_PROTOCOLS_STR] = implode(',', $options->allowedProtocols);
         }
