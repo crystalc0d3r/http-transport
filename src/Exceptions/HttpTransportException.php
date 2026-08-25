@@ -12,7 +12,7 @@ class HttpTransportException extends \RuntimeException
     public function __construct(
         string $message,
         private RequestInterface $request,
-        private ?ResponseInterface $response = null,
+        private ?ResponseInterface $response,
         private array $context,
         ?\Throwable $previous = null
     ) {
