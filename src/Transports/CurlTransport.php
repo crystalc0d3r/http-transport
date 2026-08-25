@@ -224,20 +224,20 @@ class CurlTransport implements HttpTransport
     private function applyBaseOptions(RequestInterface $request, Options $options): array
     {
         $opts = [
-            CURLOPT_URL            => (string) $request->getUri(),
-            CURLOPT_CUSTOMREQUEST  => $request->getMethod(),
-            CURLOPT_RETURNTRANSFER => false,
-            CURLOPT_HEADER         => false,
-            CURLOPT_CONNECTTIMEOUT => $options->connectTimeout,
-            CURLOPT_TIMEOUT        => $options->timeout,
-            CURLOPT_SSL_VERIFYPEER => $options->verifySsl,
-            CURLOPT_SSL_VERIFYHOST => $options->verifySsl ? 2 : 0,
+            CURLOPT_URL               => (string) $request->getUri(),
+            CURLOPT_CUSTOMREQUEST     => $request->getMethod(),
+            CURLOPT_RETURNTRANSFER    => false,
+            CURLOPT_HEADER            => false,
+            CURLOPT_CONNECTTIMEOUT_MS => (int) ($options->connectTimeout * 1000),
+            CURLOPT_TIMEOUT_MS        => (int) ($options->timeout * 1000),
+            CURLOPT_SSL_VERIFYPEER    => $options->verifySsl,
+            CURLOPT_SSL_VERIFYHOST    => $options->verifySsl ? 2 : 0,
         ];
 
         // Built-in workaround
         if ($options->readTimeout > 0) {
             $opts[CURLOPT_LOW_SPEED_LIMIT] = 1;
-            $opts[CURLOPT_LOW_SPEED_TIME]  = $options->readTimeout;
+            $opts[CURLOPT_LOW_SPEED_TIME]  = (int) ceil($options->readTimeout);
         }
 
         if ($options->allowedProtocols) {
